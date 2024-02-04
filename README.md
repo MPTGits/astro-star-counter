@@ -40,3 +40,9 @@ We can see how the astronomy objects were extracted with a black border surrondi
 
 ## Edge detection
 
+## Watershed
+
+<p align="center">
+  <img src='images/watershed_output.png' width='512'>
+</p>
+
