@@ -42,7 +42,6 @@ We can see how the astronomy objects were extracted with a black border surrondi
 
 ## Watershed
 
-<p align="center">
-  <img src='images/watershed_output.png' width='512'>
-</p>
+![watershed_output](https://github.com/MPTGits/astro-star-counter/assets/37246713/8fbd352b-9240-4cf1-bebf-909e8f305c33)
+
 
