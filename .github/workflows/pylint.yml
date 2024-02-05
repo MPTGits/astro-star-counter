@@ -21,4 +21,4 @@ jobs:
         pip install numpy opencv-python
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --generate-members $(git ls-files '*.py')
