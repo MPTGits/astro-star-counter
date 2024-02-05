@@ -15,7 +15,7 @@ def apply_threshold(image):
     return thresh
 
 def detect_connected_components(threshold_image):
-    num_labels, labels_im = cv2.connectedComponents(threshold_image)
+    _, labels_im = cv2.connectedComponents(threshold_image)
     # Map component labels to hue val, 0-179 is the hue range in OpenCV
     label_hue = np.uint8(179 * labels_im / np.max(labels_im))
     blank_ch = 255 * np.ones_like(label_hue)
@@ -40,7 +40,7 @@ def apply_watershed(noise_free_img, grayscale_image, original_image):
     save_image(sure_bg, 'images/sure_bg.png')
 
     dist_transform = cv2.distanceTransform(noise_free_img, cv2.DIST_L2, 5)
-    ret, sure_fg = cv2.threshold(dist_transform, 0.3 * dist_transform.max(), 255, 0)
+    _, sure_fg = cv2.threshold(dist_transform, 0.3 * dist_transform.max(), 255, 0)
     save_image(sure_fg, 'images/sure_fg.png')
 
     sure_fg = np.uint8(sure_fg)
@@ -77,7 +77,7 @@ def display_images(image_path):
     image2 = mpimg.imread('images/watershed_output.png')
 
     # Create a figure to display the images
-    fig, ax = plt.subplots(1, 2)  # 1 row, 2 columns
+    _, ax = plt.subplots(1, 2)  # 1 row, 2 columns
 
     # Display the first image
     ax[0].imshow(image1)
