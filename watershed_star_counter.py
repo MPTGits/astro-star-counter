@@ -1,3 +1,5 @@
+"""Mode for detecting stars in an image using the watershed algorithm."""
+
 import argparse
 
 import numpy as np
@@ -6,15 +8,18 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 def save_image(image, output_path):
+    """Save an image to a file."""
     cv2.imwrite(output_path, image)
 
 def apply_threshold(image):
+    """Apply a threshold to an image."""
     thresh = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                    cv2.THRESH_BINARY, 11, 2)
     save_image(thresh, 'images/thresh.png')
     return thresh
 
 def detect_connected_components(threshold_image):
+    """Detect connected components in an image."""
     _, labels_im = cv2.connectedComponents(threshold_image)
     # Map component labels to hue val, 0-179 is the hue range in OpenCV
     label_hue = np.uint8(179 * labels_im / np.max(labels_im))
@@ -33,6 +38,7 @@ def detect_connected_components(threshold_image):
     return labeled_img
 
 def apply_watershed(noise_free_img, grayscale_image, original_image):
+    """Apply the watershed algorithm to an image."""
     kernel = np.ones((3, 3), np.uint8)
 
     # sure background area
@@ -47,7 +53,7 @@ def apply_watershed(noise_free_img, grayscale_image, original_image):
     unknown = cv2.subtract(sure_bg, sure_fg)
     save_image(unknown, 'images/unknown_area.png')
 
-    ret, markers = cv2.connectedComponents(sure_fg)
+    _, markers = cv2.connectedComponents(sure_fg)
 
     # Add one to all labels so that sure background is not 0, but 1
     markers = markers + 1
@@ -72,6 +78,7 @@ def apply_watershed(noise_free_img, grayscale_image, original_image):
     return markers
 
 def display_images(image_path):
+    """Display two images side by side."""
     # Load the images
     image1 = mpimg.imread(image_path)
     image2 = mpimg.imread('images/watershed_output.png')
@@ -90,11 +97,13 @@ def display_images(image_path):
     plt.show()
 
 def count_stars(markers):
+    """Count the number of stars in an image."""
     unique_markers = np.unique(markers)
     unique_markers = np.delete(unique_markers, np.where(unique_markers <= 1))
     return len(unique_markers)
 
 def main(image_path):
+    """Main function."""
     print("Starting process...")
     image = cv2.imread(image_path)
     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
